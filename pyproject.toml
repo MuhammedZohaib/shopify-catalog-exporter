@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "shopify-sitemap-to-csv"
+name = "shopify-products-to-csv"
 version = "0.1.0"
 description = "Convert Shopify product sitemaps into Shopify import-ready CSV."
 readme = "README.md"
@@ -19,7 +19,7 @@ classifiers = [
 ]
 
 [project.scripts]
-shopify-sitemap-to-csv = "shopify_csv_cli.cli:main"
+shopify-products-to-csv = "shopify_csv_cli.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["shopify_csv_cli*"]

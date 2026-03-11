@@ -7,7 +7,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 
-DEFAULT_USER_AGENT = "shopify-sitemap-to-csv/0.1 (+https://example.local)"
+DEFAULT_USER_AGENT = "shopify-products-to-csv/0.1 (+https://example.local)"
 
 
 class ResponseLike(Protocol):

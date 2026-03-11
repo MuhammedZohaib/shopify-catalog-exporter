@@ -12,7 +12,7 @@ from .sitemap import discover_product_urls
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="shopify-sitemap-to-csv",
+        prog="shopify-products-to-csv",
         description="Discover Shopify products from sitemap and export import-ready CSV.",
     )
     parser.add_argument("store", help="Shopify domain, base URL, or sitemap XML URL.")

@@ -1,4 +1,4 @@
-# Shopify Sitemap To CSV
+# Shopify Products To CSV
 
 CLI tool to discover Shopify product URLs via sitemap files, scrape product data, and write a Shopify import-ready CSV.
 
@@ -12,7 +12,7 @@ Or, after installation:
 
 ```bash
 python3 -m pip install -e .
-shopify-sitemap-to-csv your-store.com --output products.csv
+shopify-products-to-csv your-store.com --output products.csv
 ```
 
 ## Options
