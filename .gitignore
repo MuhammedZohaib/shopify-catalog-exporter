@@ -1,0 +1,16 @@
+.DS_Store
+__pycache__/
+.pytest_cache/
+.coverage
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+
+# Generated outputs
+products.csv
+products_*.csv
