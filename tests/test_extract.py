@@ -1,6 +1,10 @@
 import unittest
 
-from shopify_csv_cli.extract import extract_product_from_html
+from shopify_csv_cli.extract import (
+    build_product_json_url,
+    extract_product_from_html,
+    extract_product_from_json_text,
+)
 
 
 HTML_WITH_PRODUCT_JSON = """
@@ -75,6 +79,12 @@ HTML_FALLBACK = """
 
 
 class ExtractTests(unittest.TestCase):
+    def test_build_product_json_url(self) -> None:
+        self.assertEqual(
+            build_product_json_url("https://example.com/products/test-shirt?variant=1"),
+            "https://example.com/products/test-shirt.js",
+        )
+
     def test_extract_from_shopify_product_json(self) -> None:
         product = extract_product_from_html("https://example.com/products/test-shirt", HTML_WITH_PRODUCT_JSON)
         self.assertIsNotNone(product)
@@ -96,6 +106,52 @@ class ExtractTests(unittest.TestCase):
         self.assertEqual(product.images[0].src, "https://cdn.shopify.com/a.jpg")
         self.assertEqual(product.images[1].src, "https://cdn.shopify.com/b.jpg")
         self.assertEqual(product.images[2].src, "https://cdn.shopify.com/c.jpg")
+
+    def test_extract_from_storefront_json_text(self) -> None:
+        json_text = """
+        {
+          "id": 1,
+          "title": "Direct Product",
+          "handle": "direct-product",
+          "vendor": "Acme",
+          "product_type": "Shoes",
+          "tags": "shoe, leather",
+          "options": ["Title"],
+          "variants": [
+            {"id": 11, "title": "Default Title", "option1": "Default Title", "sku": "D1", "price": 1000}
+          ],
+          "images": ["https://cdn.shopify.com/direct.jpg"]
+        }
+        """
+        product = extract_product_from_json_text(
+            "https://example.com/products/direct-product",
+            json_text,
+        )
+        self.assertIsNotNone(product)
+        assert product is not None
+        self.assertEqual(product.handle, "direct-product")
+        self.assertEqual(product.variants[0].option1, "Default Title")
+        self.assertEqual(product.images[0].src, "https://cdn.shopify.com/direct.jpg")
+
+    def test_unavailable_variant_without_quantity_forces_zero_qty(self) -> None:
+        json_text = """
+        {
+          "id": 1,
+          "title": "Stock Product",
+          "handle": "stock-product",
+          "options": ["Title"],
+          "variants": [
+            {"id": 11, "title": "Default Title", "option1": "Default Title", "available": false, "price": 1000}
+          ]
+        }
+        """
+        product = extract_product_from_json_text(
+            "https://example.com/products/stock-product",
+            json_text,
+        )
+        self.assertIsNotNone(product)
+        assert product is not None
+        self.assertEqual(product.variants[0].inventory_qty, "0")
 
     def test_extract_from_jsonld(self) -> None:
         product = extract_product_from_html("https://example.com/products/jsonld-product", HTML_WITH_JSONLD)

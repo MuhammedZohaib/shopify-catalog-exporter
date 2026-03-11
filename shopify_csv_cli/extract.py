@@ -51,6 +51,12 @@ def _handle_from_url(url: str) -> str:
     return parts[-1] if parts and parts[-1] else "unknown-product"
 
 
+def build_product_json_url(page_url: str) -> str:
+    parsed = urlparse(page_url)
+    handle = _handle_from_url(page_url)
+    return f"{parsed.scheme}://{parsed.netloc}/products/{handle}.js"
+
+
 def _parse_tags(raw: Any) -> list[str]:
     if raw is None:
         return []
@@ -185,8 +191,24 @@ def _extract_variants(raw_variants: Any, option_names: list[str], page_url: str)
             option1 = _to_str(variant.get("option1"))
             option2 = _to_str(variant.get("option2"))
             option3 = _to_str(variant.get("option3"))
+            variant_title_parts = [
+                part.strip() for part in _to_str(variant.get("title")).split(" / ") if part.strip()
+            ]
+            if not option1 and variant_title_parts:
+                option1 = variant_title_parts[0]
+            if not option2 and len(variant_title_parts) > 1:
+                option2 = variant_title_parts[1]
+            if not option3 and len(variant_title_parts) > 2:
+                option3 = variant_title_parts[2]
             if not option1 and option_names[:1] == ["Title"]:
                 option1 = "Default Title"
+
+            inventory_qty = _to_str(variant.get("inventory_quantity"))
+            is_available = _bool(variant.get("available"), True)
+            # Storefront JSON may hide exact stock but still marks availability.
+            # If unavailable and quantity is missing, export 0 to avoid overselling after import.
+            if not is_available and not inventory_qty:
+                inventory_qty = "0"
 
             variants.append(
                 ProductVariant(
@@ -196,7 +218,7 @@ def _extract_variants(raw_variants: Any, option_names: list[str], page_url: str)
                     sku=_to_str(variant.get("sku")),
                     grams=_to_str(variant.get("grams")),
                     inventory_tracker=_to_str(variant.get("inventory_management")),
-                    inventory_qty=_to_str(variant.get("inventory_quantity")),
+                    inventory_qty=inventory_qty,
                     inventory_policy=_to_str(variant.get("inventory_policy")) or "deny",
                     fulfillment_service=_to_str(variant.get("fulfillment_service")) or "manual",
                     price=_normalize_price(variant.get("price")),
@@ -225,6 +247,45 @@ def _extract_variants(raw_variants: Any, option_names: list[str], page_url: str)
         variants = [ProductVariant(option1=option1_default)]
 
     return variants
+
+
+def _sanitize_options(
+    option_names: list[str], variants: list[ProductVariant]
+) -> tuple[list[str], list[ProductVariant]]:
+    names = option_names[:3] if option_names else ["Title"]
+    while len(names) < 3:
+        names.append("")
+
+    if not variants:
+        return names[:1], [ProductVariant(option1="Default Title")]
+
+    for variant in variants:
+        if not variant.option1:
+            variant.option1 = "Default Title"
+
+    suspicious_single_name = (
+        len([name for name in names if name]) == 1
+        and names[0]
+        and ("|" in names[0] or " / " in names[0])
+    )
+    if suspicious_single_name and all(
+        not variant.option2 and not variant.option3 for variant in variants
+    ):
+        names[0] = "Title"
+        for variant in variants:
+            variant.option1 = "Default Title"
+
+    if names[1] and all(not variant.option2 for variant in variants):
+        names[1] = ""
+    if names[2] and all(not variant.option3 for variant in variants):
+        names[2] = ""
+
+    while names and not names[-1]:
+        names.pop()
+    if not names:
+        names = ["Title"]
+
+    return names, variants
 
 
 def _extract_color_pattern(option_names: list[str], variants: list[ProductVariant]) -> str:
@@ -257,12 +318,15 @@ def _iter_objects(value: Any) -> list[dict[str, Any]]:
 
 
 def _looks_like_shopify_product(obj: dict[str, Any]) -> bool:
-    title = obj.get("title")
-    return isinstance(title, str) and (
-        isinstance(obj.get("variants"), list)
-        or isinstance(obj.get("options"), list)
-        or "handle" in obj
-    )
+    if not isinstance(obj.get("title"), str):
+        return False
+    variants = obj.get("variants")
+    if not isinstance(variants, list) or not variants:
+        return False
+    if not isinstance(variants[0], dict):
+        return False
+    has_identity = isinstance(obj.get("handle"), str) or isinstance(obj.get("id"), int)
+    return has_identity
 
 
 def _load_json_documents(scripts: list[tuple[str, str]], script_type: str) -> list[Any]:
@@ -286,6 +350,7 @@ def _extract_from_shopify_json(docs: list[Any], page_url: str) -> Product | None
             title = _to_str(obj.get("title")) or handle
             option_names = _extract_option_names(obj.get("options"))
             variants = _extract_variants(obj.get("variants"), option_names, page_url)
+            option_names, variants = _sanitize_options(option_names, variants)
             taxonomy = obj.get("taxonomy")
             product_category = _to_str(obj.get("category") or obj.get("product_category"))
             if not product_category and isinstance(taxonomy, dict):
@@ -316,6 +381,14 @@ def _extract_from_shopify_json(docs: list[Any], page_url: str) -> Product | None
             product.ensure_defaults()
             return product
     return None
+
+
+def extract_product_from_json_text(page_url: str, json_text: str) -> Product | None:
+    try:
+        doc = json.loads(json_text)
+    except json.JSONDecodeError:
+        return None
+    return _extract_from_shopify_json([doc], page_url)
 
 
 def _is_jsonld_product(obj: dict[str, Any]) -> bool:

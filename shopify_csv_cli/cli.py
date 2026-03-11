@@ -5,7 +5,7 @@ import sys
 import time
 
 from .csv_export import write_products_csv
-from .extract import extract_product_from_html
+from .extract import build_product_json_url, extract_product_from_html, extract_product_from_json_text
 from .http_utils import DEFAULT_USER_AGENT, create_session, fetch_text
 from .sitemap import discover_product_urls
 
@@ -102,14 +102,31 @@ def run(argv: list[str] | None = None) -> int:
         if args.verbose:
             print(f"[{idx}/{total}] Scraping {product_url}")
         try:
-            html = fetch_text(
-                session=session,
-                url=product_url,
-                timeout=args.timeout,
-                retries=args.retries,
-                verbose=args.verbose,
-            )
-            product = extract_product_from_html(product_url, html)
+            product = None
+
+            product_json_url = build_product_json_url(product_url)
+            try:
+                product_json = fetch_text(
+                    session=session,
+                    url=product_json_url,
+                    timeout=args.timeout,
+                    retries=args.retries,
+                    verbose=False,
+                )
+                product = extract_product_from_json_text(product_url, product_json)
+            except Exception:
+                product = None
+
+            if product is None:
+                html = fetch_text(
+                    session=session,
+                    url=product_url,
+                    timeout=args.timeout,
+                    retries=args.retries,
+                    verbose=args.verbose,
+                )
+                product = extract_product_from_html(product_url, html)
+
             if product is None:
                 failures.append((product_url, "Unable to parse product details"))
             else:
