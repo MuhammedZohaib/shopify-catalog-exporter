@@ -8,7 +8,15 @@ version = "0.1.0"
 description = "Convert Shopify product sitemaps into Shopify import-ready CSV."
 readme = "README.md"
 requires-python = ">=3.10"
+license = {file = "LICENSE"}
 dependencies = []
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Developers",
+  "Environment :: Console",
+]
 
 [project.scripts]
 shopify-sitemap-to-csv = "shopify_csv_cli.cli:main"

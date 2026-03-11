@@ -5,12 +5,13 @@ CLI tool to discover Shopify product URLs via sitemap files, scrape product data
 ## Usage
 
 ```bash
-python -m shopify_csv_cli your-store.com --output products.csv
+python3 -m shopify_csv_cli your-store.com --output products.csv
 ```
 
 Or, after installation:
 
 ```bash
+python3 -m pip install -e .
 shopify-sitemap-to-csv your-store.com --output products.csv
 ```
 
@@ -23,3 +24,17 @@ shopify-sitemap-to-csv your-store.com --output products.csv
 - `--delay-ms`: Delay between product requests in milliseconds (default: `150`)
 - `--max-products`: Limit number of products processed
 - `--verbose`: Print progress details
+
+## Development
+
+```bash
+python3 -m pip install -e .
+python3 -m unittest discover -s tests -v
+```
+
+## Open Source
+
+- License: [MIT](./LICENSE)
+- Contributing guide: [CONTRIBUTING.md](./CONTRIBUTING.md)
+- Code of conduct: [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
+- Security policy: [SECURITY.md](./SECURITY.md)
