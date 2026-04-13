@@ -41,7 +41,9 @@ PRODUCT_SITEMAP_XML = """<?xml version="1.0" encoding="UTF-8"?>
 
 class SitemapTests(unittest.TestCase):
     def test_build_sitemap_index_url_for_domain(self) -> None:
-        self.assertEqual(build_sitemap_index_url("example.com"), "https://example.com/sitemap.xml")
+        self.assertEqual(
+            build_sitemap_index_url("example.com"), "https://example.com/sitemap.xml"
+        )
 
     def test_build_sitemap_index_url_for_base_url(self) -> None:
         self.assertEqual(

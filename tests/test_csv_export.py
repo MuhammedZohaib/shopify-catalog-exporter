@@ -3,7 +3,11 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from shopify_catalog_exporter.csv_export import load_template_headers, product_to_rows, write_products_csv
+from shopify_catalog_exporter.csv_export import (
+    load_template_headers,
+    product_to_rows,
+    write_products_csv,
+)
 from shopify_catalog_exporter.models import Product, ProductImage, ProductVariant
 
 
@@ -45,9 +49,15 @@ class CsvExportTests(unittest.TestCase):
         self.assertEqual(rows[0]["URL handle"], "sample-product")
         self.assertEqual(rows[0]["SKU"], "SKU1")
         self.assertEqual(rows[0]["Product image URL"], "https://cdn.shopify.com/1.jpg")
-        self.assertEqual(rows[0]["Variant image URL"], "https://cdn.shopify.com/variant-1.jpg")
-        self.assertEqual(rows[0]["Option2 Linked To"], "product.metafields.shopify.color-pattern")
-        self.assertEqual(rows[0]["Color (product.metafields.shopify.color-pattern)"], "black")
+        self.assertEqual(
+            rows[0]["Variant image URL"], "https://cdn.shopify.com/variant-1.jpg"
+        )
+        self.assertEqual(
+            rows[0]["Option2 Linked To"], "product.metafields.shopify.color-pattern"
+        )
+        self.assertEqual(
+            rows[0]["Color (product.metafields.shopify.color-pattern)"], "black"
+        )
         self.assertEqual(rows[1]["Title"], "")
         self.assertEqual(rows[1]["SKU"], "SKU2")
         self.assertEqual(rows[2]["URL handle"], "sample-product")

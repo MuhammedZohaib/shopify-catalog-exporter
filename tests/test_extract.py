@@ -86,7 +86,9 @@ class ExtractTests(unittest.TestCase):
         )
 
     def test_extract_from_shopify_product_json(self) -> None:
-        product = extract_product_from_html("https://example.com/products/test-shirt", HTML_WITH_PRODUCT_JSON)
+        product = extract_product_from_html(
+            "https://example.com/products/test-shirt", HTML_WITH_PRODUCT_JSON
+        )
         self.assertIsNotNone(product)
         assert product is not None
         self.assertEqual(product.handle, "test-shirt")
@@ -154,7 +156,9 @@ class ExtractTests(unittest.TestCase):
         self.assertEqual(product.variants[0].inventory_qty, "0")
 
     def test_extract_from_jsonld(self) -> None:
-        product = extract_product_from_html("https://example.com/products/jsonld-product", HTML_WITH_JSONLD)
+        product = extract_product_from_html(
+            "https://example.com/products/jsonld-product", HTML_WITH_JSONLD
+        )
         self.assertIsNotNone(product)
         assert product is not None
         self.assertEqual(product.title, "JSON-LD Product")
@@ -165,7 +169,9 @@ class ExtractTests(unittest.TestCase):
         self.assertEqual(product.images[0].src, "https://cdn.shopify.com/jsonld.jpg")
 
     def test_extract_fallback_when_json_missing(self) -> None:
-        product = extract_product_from_html("https://example.com/products/fallback-item", HTML_FALLBACK)
+        product = extract_product_from_html(
+            "https://example.com/products/fallback-item", HTML_FALLBACK
+        )
         self.assertIsNotNone(product)
         assert product is not None
         self.assertEqual(product.handle, "fallback-item")
