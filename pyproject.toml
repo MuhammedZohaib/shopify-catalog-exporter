@@ -1,25 +1,42 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "shopify-products-to-csv"
+name = "shopify-catalog-exporter"
 version = "0.1.0"
-description = "Convert Shopify product sitemaps into Shopify import-ready CSV."
+description = "Scrape any Shopify store's sitemap and export products to a Shopify import-ready CSV."
 readme = "README.md"
 requires-python = ">=3.10"
-license = {file = "LICENSE"}
-dependencies = []
+license = { file = "LICENSE" }
+keywords = ["shopify", "csv", "scraper", "sitemap", "ecommerce"]
+authors = [
+  { name = "Muhammad Zohaib", email = "alizuhaib828@gmail.com" }
+]
 classifiers = [
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "License :: OSI Approved :: MIT License",
   "Intended Audience :: Developers",
+  "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
   "Environment :: Console",
 ]
+dependencies = []  # stdlib-only; requests is optional
+
+[project.optional-dependencies]
+requests = ["requests>=2.28"]
+
+[project.urls]
+Homepage = "https://github.com/MuhammedZohaib/shopify-catalog-exporter"
+Repository = "https://github.com/MuhammedZohaib/shopify-catalog-exporter"
 
 [project.scripts]
-shopify-products-to-csv = "shopify_csv_cli.cli:main"
+shopify-catalog-export = "shopify_catalog_exporter.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["shopify_csv_cli*"]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"

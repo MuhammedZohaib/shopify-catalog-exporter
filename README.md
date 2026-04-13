@@ -1,40 +1,32 @@
-# Shopify Products To CSV
+# shopify-catalog-exporter
 
-CLI tool to discover Shopify product URLs via sitemap files, scrape product data, and write a Shopify import-ready CSV.
+Scrape any public Shopify store via its sitemap and export all products to a
+Shopify Admin-compatible import CSV — no API key required.
+
+## Install
+
+```bash
+pip install shopify-catalog-exporter
+# or for faster HTTP:
+pip install "shopify-catalog-exporter[requests]"
+```
 
 ## Usage
 
 ```bash
-python3 -m shopify_csv_cli your-store.com --output products.csv
-```
-
-Or, after installation:
-
-```bash
-python3 -m pip install -e .
-shopify-products-to-csv your-store.com --output products.csv
+shopify-catalog-export someshop.myshopify.com
+shopify-catalog-export someshop.myshopify.com --output products.csv --verbose
+shopify-catalog-export someshop.myshopify.com --max-products 50 --delay-ms 200
 ```
 
 ## Options
 
-- `--output`: Output CSV path (default: `products.csv`)
-- `--template`: Optional CSV template path (defaults to local `product_template.csv` if present)
-- `--timeout`: HTTP timeout per request in seconds (default: `10`)
-- `--retries`: Number of retries for failed HTTP requests (default: `2`)
-- `--delay-ms`: Delay between product requests in milliseconds (default: `150`)
-- `--max-products`: Limit number of products processed
-- `--verbose`: Print progress details
-
-## Development
-
-```bash
-python3 -m pip install -e .
-python3 -m unittest discover -s tests -v
-```
-
-## Open Source
-
-- License: [MIT](./LICENSE)
-- Contributing guide: [CONTRIBUTING.md](./CONTRIBUTING.md)
-- Code of conduct: [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
-- Security policy: [SECURITY.md](./SECURITY.md)
+| Flag | Default | Description |
+|---|---|---|
+| `--output` | `products.csv` | Output CSV path |
+| `--template` | auto | Custom CSV template path |
+| `--timeout` | `10` | HTTP timeout in seconds |
+| `--retries` | `2` | Retries on failure |
+| `--delay-ms` | `150` | Delay between requests (ms) |
+| `--max-products` | none | Cap number of products |
+| `--verbose` | off | Print progress details |
