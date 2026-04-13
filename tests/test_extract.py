@@ -1,6 +1,6 @@
 import unittest
 
-from shopify_csv_cli.extract import (
+from shopify_catalog_exporter.extract import (
     build_product_json_url,
     extract_product_from_html,
     extract_product_from_json_text,

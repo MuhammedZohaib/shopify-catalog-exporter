@@ -3,9 +3,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from shopify_csv_cli.csv_export import write_products_csv
-from shopify_csv_cli.extract import extract_product_from_html
-from shopify_csv_cli.sitemap import discover_product_urls
+from shopify_catalog_exporter.csv_export import write_products_csv
+from shopify_catalog_exporter.extract import extract_product_from_html
+from shopify_catalog_exporter.sitemap import discover_product_urls
 
 
 class _FakeResponse:

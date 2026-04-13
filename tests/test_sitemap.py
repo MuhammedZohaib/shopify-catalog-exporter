@@ -1,6 +1,6 @@
 import unittest
 
-from shopify_csv_cli.sitemap import (
+from shopify_catalog_exporter.sitemap import (
     build_sitemap_index_url,
     filter_product_urls,
     filter_product_sitemaps,

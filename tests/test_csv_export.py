@@ -3,8 +3,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from shopify_csv_cli.csv_export import load_template_headers, product_to_rows, write_products_csv
-from shopify_csv_cli.models import Product, ProductImage, ProductVariant
+from shopify_catalog_exporter.csv_export import load_template_headers, product_to_rows, write_products_csv
+from shopify_catalog_exporter.models import Product, ProductImage, ProductVariant
 
 
 class CsvExportTests(unittest.TestCase):
