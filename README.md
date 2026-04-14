@@ -1,10 +1,23 @@
-[![PyPI Downloads](https://static.pepy.tech/personalized-badge/shopify-catalog-exporter?period=total&units=INTERNATIONAL_SYSTEM&left_color=BLACK&right_color=GREEN&left_text=downloads)](https://pepy.tech/projects/shopify-catalog-exporter)
-[![PyPI Version](https://img.shields.io/pypi/v/shopify-catalog-exporter?color=blue)](https://pypi.org/project/shopify-catalog-exporter/)
-[![Python Versions](https://img.shields.io/pypi/pyversions/shopify-catalog-exporter)](https://pypi.org/project/shopify-catalog-exporter/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<p align="center">
+  <img src="sample-data/sample.jpeg" alt="shopify-catalog-exporter banner" width="100%">
+</p>
+
+<p align="center">
+  <a href="https://pepy.tech/projects/shopify-catalog-exporter">
+    <img src="https://static.pepy.tech/personalized-badge/shopify-catalog-exporter?period=total&units=INTERNATIONAL_SYSTEM&left_color=BLACK&right_color=GREEN&left_text=downloads" alt="PyPI Downloads">
+  </a>
+  <a href="https://pypi.org/project/shopify-catalog-exporter/">
+    <img src="https://img.shields.io/pypi/v/shopify-catalog-exporter?color=blue" alt="PyPI Version">
+  </a>
+  <a href="https://pypi.org/project/shopify-catalog-exporter/">
+    <img src="https://img.shields.io/pypi/pyversions/shopify-catalog-exporter" alt="Python Versions">
+  </a>
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/license-MIT-yellow.svg" alt="License: MIT">
+  </a>
+</p>
 
 # 🛍️ shopify-catalog-exporter
-
 > Scrape any public Shopify store via its sitemap and export all products to a  
 > Shopify Admin-compatible import CSV — **no API key required.**
 
