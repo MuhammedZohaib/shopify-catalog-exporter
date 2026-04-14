@@ -1,3 +1,8 @@
+# shopify-catalog-exporter
+> Scrape any public Shopify store via its sitemap and export all products to a  
+> Shopify Admin-compatible import CSV — **no API key required.**
+---
+
 <p align="center">
   <img src="sample-data/sample.jpeg" alt="shopify-catalog-exporter banner" width="100%">
 </p>
@@ -17,13 +22,9 @@
   </a>
 </p>
 
-# 🛍️ shopify-catalog-exporter
-> Scrape any public Shopify store via its sitemap and export all products to a  
-> Shopify Admin-compatible import CSV — **no API key required.**
-
 ---
 
-## ✨ Features
+## Features
 
 - 🔍 Discovers products automatically via the store's public sitemap
 - 📦 Exports to a Shopify Admin-compatible CSV — ready to import as-is
@@ -33,7 +34,7 @@
 
 ---
 
-## 📦 Installation
+## Installation
 
 ```bash
 # Standard install
@@ -45,7 +46,7 @@ pip install "shopify-catalog-exporter[requests]"
 
 ---
 
-## 🚀 Usage
+## Usage
 
 ```bash
 # Basic export
@@ -60,7 +61,7 @@ shopify-catalog-export someshop.com --max-products 50 --delay-ms 200
 
 ---
 
-## ⚙️ Options
+## Options
 
 | Flag               | Default          | Description                          |
 |--------------------|------------------|--------------------------------------|
@@ -71,9 +72,4 @@ shopify-catalog-export someshop.com --max-products 50 --delay-ms 200
 | `--delay-ms`       | `150`            | Delay between requests (ms)          |
 | `--max-products`   | none             | Cap the number of exported products  |
 | `--verbose`        | off              | Print detailed progress to stdout    |
-
 ---
-
-## 📄 License
-
-MIT © [Muhammed Zohaib]
