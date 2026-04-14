@@ -39,10 +39,10 @@ pip install "shopify-catalog-exporter[requests]"
 shopify-catalog-export someshop.myshopify.com
 
 # Custom output file with verbose logging
-shopify-catalog-export someshop.myshopify.com --output products.csv --verbose
+shopify-catalog-export someshop.com --output products.csv --verbose
 
 # Cap products and add request delay
-shopify-catalog-export someshop.myshopify.com --max-products 50 --delay-ms 200
+shopify-catalog-export someshop.com --max-products 50 --delay-ms 200
 ```
 
 ---
