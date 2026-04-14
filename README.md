@@ -50,7 +50,7 @@ pip install "shopify-catalog-exporter[requests]"
 
 ```bash
 # Basic export
-shopify-catalog-export someshop.myshopify.com
+shopify-catalog-export someshop.com
 
 # Custom output file with verbose logging
 shopify-catalog-export someshop.com --output products.csv --verbose
